@@ -1,0 +1,26 @@
+/* Section header : nombre de tâches, titre, diagramme */
+.header {
+    background-color: #e0e0e0;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.task-count {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.diagram {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

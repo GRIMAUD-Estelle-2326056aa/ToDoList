@@ -1,0 +1,31 @@
+/* Style général pour la page */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+/* Container général de l'application */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+/* Style boutons par défaut */
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: lightblue;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: lightskyblue;
+}

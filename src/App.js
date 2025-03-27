@@ -1,37 +1,32 @@
-import { useState } from 'react';
-
-import './App.css';
-import Header from './Header.js';
-import Footer from './Footer.js';
-
+import { TodoContext, TodoProvider } from "./Context/TodoContext";
+import Header from './Header';
+import TableauTaches from "./TableauTaches";
+import TableauCategories from "./TableauCategories";
+import Footer from './Footer';
+import './styles/App.css';
 import todos from './todos.json';
+import {useContext} from "react";
 
-function App() {
-    const [currentTodos, setCurrentTodos] = useState(todos)
-    const taches = currentTodos.taches
-
-    const ajoutTache = () => {
-        const tache = {
-            id: 111, title: 'Nouvelle tache'
-        }
-        const newTodos = {
-            ...currentTodos,
-            taches: [
-                ...currentTodos.taches,
-                tache
-            ]
-        }
-        setCurrentTodos(newTodos)
-    }
+function AppContent() {
+    const { currentView } = useContext(TodoContext);
+    console.log("Vue actuelle :", currentView);
 
     return (
-    <div className="App">
-        <Header taches={taches} />
-        <br/>
-        {taches && taches.map(t => <div>{t.title}</div>)}
-        <br/>
-        <Footer />
-    </div>
+        <div className="app-container">
+            <Header />
+            <br />
+            {currentView === 'tasks' ? <TableauTaches /> : <TableauCategories />}
+            <br/>
+            <Footer />
+        </div>
+    );
+}
+
+function App() {
+    return (
+        <TodoProvider initialTodos={todos}>
+            <AppContent />
+        </TodoProvider>
     );
 }
 

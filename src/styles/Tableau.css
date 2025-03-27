@@ -1,0 +1,141 @@
+.table-section {
+    flex-grow: 1;
+    padding: 16px;
+}
+
+/* Style pour la section des actions (tri et filtre) */
+.sort-filter-section {
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Style commun pour les dropdowns (tri et filtre) */
+.sort-dropdown,
+.filter-dropdown {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Style pour les labels */
+.sort-dropdown label,
+.filter-dropdown label {
+    font-weight: 600;
+    margin-right: 10px;
+    color: #2c3e50;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* Style pour les selects (menus déroulants) */
+.sort-dropdown select,
+.filter-dropdown select {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #ffffff;
+    font-size: 14px;
+    width: 200px;
+    max-width: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M1 4l5 5 5-5' fill='none' stroke='%23888' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.sort-dropdown select:hover,
+.filter-dropdown select:hover {
+    border-color: #3498db;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sort-dropdown select:focus,
+.filter-dropdown select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sort-filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sort-dropdown,
+    .filter-dropdown {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .sort-dropdown select,
+    .filter-dropdown select {
+        width: 100%;
+    }
+}
+
+/* Style du tableau */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.task-row:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.task-details {
+    padding: 12px;
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    margin-top: 8px;
+}
+
+.task-detail-row td {
+    border: none;
+    padding-top: 0;
+}
+
+.category-detail {
+    border: 1px solid;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Style condition etat ou urgence */
+
+/* Tâche urgente (urgent == true) */
+.task-row.urgent {
+    color: red; /* Texte en rouge */
+}
+
+/* Tâche marquée comme réussie (etat == "Reussi") */
+.task-row.done {
+    text-decoration: line-through; /* Barrer le texte */
+}
+
+/* Optionnel : Ajout d'un style pour une tâche non urgente mais réussie */
+.task-row.done.urgent {
+    color: red; /* Si la tâche est urgente et réussie, rouge et barrée */
+}
