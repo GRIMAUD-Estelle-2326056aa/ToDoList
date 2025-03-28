@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
-import { TodoContext } from "./Context/TodoContext";
-import './styles/Tableau.css';
+import { TodoContext } from "../context/TodoContext";
+import '../styles/Tableau.css';
 
 const TableauCategories = () => {
     const { currentTodos } = useContext(TodoContext);

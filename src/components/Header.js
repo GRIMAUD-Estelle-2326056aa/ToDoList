@@ -1,6 +1,6 @@
-import './styles/Header.css'
+import '../styles/Header.css'
 
-import { TodoContext } from "./Context/TodoContext";
+import { TodoContext } from "../context/TodoContext";
 import {useContext, useMemo} from "react";
 import PieChartTaches from "./PieChartTaches";
 

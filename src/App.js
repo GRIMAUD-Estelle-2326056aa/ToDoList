@@ -1,10 +1,10 @@
-import { TodoContext, TodoProvider } from "./Context/TodoContext";
-import Header from './Header';
-import TableauTaches from "./TableauTaches";
-import TableauCategories from "./TableauCategories";
-import Footer from './Footer';
+import { TodoContext, TodoProvider } from "./context/TodoContext";
+import Header from './components/Header';
+import TableauTaches from "./components/TableauTaches";
+import TableauCategories from "./components/TableauCategories";
+import Footer from './components/Footer';
 import './styles/App.css';
-import todos from './todos.json';
+import todos from './json/todos.json';
 import {useContext} from "react";
 
 function AppContent() {

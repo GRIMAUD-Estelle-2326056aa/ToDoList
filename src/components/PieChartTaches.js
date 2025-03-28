@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
-import { TodoContext } from "./Context/TodoContext";
+import { TodoContext } from "../context/TodoContext";
 
 const colors = {
     "Reussi": "#28a745",     // Vert

@@ -1,10 +1,15 @@
 import React, { useContext, useState, useMemo } from 'react';
-import { TodoContext } from "./Context/TodoContext";
-import './styles/Tableau.css';
+import { TodoContext } from "../context/TodoContext";
+import '../styles/Tableau.css';
 
 const TableauTaches = () => {
 
-    const { currentTodos } = useContext(TodoContext);
+    const { currentTodos, setCurrentTodos } = useContext(TodoContext);
+
+    const [showCategoryForm, setShowCategoryForm] = useState({});
+
+    const [newCategory, setNewCategory] = useState('');
+
     const { taches, categories, relations } = currentTodos;
 
     const [expandedTaskId, setExpandedTaskId] = useState(null);
@@ -29,6 +34,33 @@ const TableauTaches = () => {
                 .filter(Boolean);
         };
     }, [categories, relations]);
+
+    const updateTask = (taskId, updatedFields) => {
+        setCurrentTodos(prevState => ({
+            ...prevState,
+            taches: prevState.taches.map(tache =>
+                tache.id === taskId ? { ...tache, ...updatedFields } : tache
+            )
+        }));
+    };
+
+    const handleEtatChange = (taskId, newEtat) => {
+        updateTask(taskId, { etat: newEtat });
+    };
+
+    const handleAddCategory = (taskId) => {
+        if (newCategory[taskId]) {
+            setCurrentTodos(prevState => {
+                const newRelation = { tache: taskId, categorie: parseInt(newCategory[taskId], 10) };
+                return {
+                    ...prevState,
+                    relations: [...prevState.relations, newRelation]
+                };
+            });
+            setNewCategory(prev => ({ ...prev, [taskId]: '' }));
+            setShowCategoryForm(prev => ({ ...prev, [taskId]: false }));
+        }
+    };
 
     // Fonction de tri
     const sortedTasks = useMemo(() => {
@@ -159,9 +191,11 @@ const TableauTaches = () => {
                         filters.etat,
                         [
                             { value: 'Tous', label: 'Tous' },
+                            { value: 'Nouveau', label: 'Nouveau' },
+                            { value: 'En cours', label: 'En cours' },
                             { value: 'Reussi', label: 'Reussi' },
                             { value: 'En attente', label: 'En attente' },
-                            { value: 'Nouveau', label: 'Nouveau' }
+                            { value: 'Abandonne', label: 'Abandonne' }
                         ],
                         (e) => setFilters(prev => ({ ...prev, etat: e.target.value }))
                     )}
@@ -211,7 +245,19 @@ const TableauTaches = () => {
                                 onClick={() => setExpandedTaskId(expandedTaskId === tache.id ? null : tache.id)}
                             >
                                 <td>{tache.title}</td>
-                                <td>{tache.etat}</td>
+                                {/* <td>{tache.etat}</td> */}
+                                <td>
+                                    <select
+                                        value={tache.etat}
+                                        onChange={(e) => handleEtatChange(tache.id, e.target.value)}
+                                    >
+                                        <option value="Nouveau">Nouveau</option>
+                                        <option value="En cours">En cours</option>
+                                        <option value="Reussi">Reussi</option>
+                                        <option value="En attente">En attente</option>
+                                        <option value="Abandonne">Abandonne</option>
+                                    </select>
+                                </td>
                                 <td>{new Date(tache.date_echeance).toLocaleDateString()}</td>
                             </tr>
 
@@ -233,6 +279,25 @@ const TableauTaches = () => {
                                                         {categorie.title}
                                                     </p>
                                                 ))}
+
+                                                {showCategoryForm[tache.id] ? (
+                                                    <div>
+                                                        <select
+                                                            value={newCategory[tache.id] || ''}
+                                                            onChange={(e) => setNewCategory(prev => ({ ...prev, [tache.id]: e.target.value }))}
+                                                        >
+                                                            <option value="">Sélectionner une catégorie</option>
+                                                            {categories.map(cat => (
+                                                                <option key={cat.id} value={cat.id}>{cat.title}</option>
+                                                            ))}
+                                                        </select>
+                                                        <button onClick={() => handleAddCategory(tache.id)}>Ajouter</button>
+                                                        <button onClick={() => setShowCategoryForm(prev => ({ ...prev, [tache.id]: false }))}>Annuler</button>
+                                                    </div>
+                                                ) : (
+                                                    <button onClick={() => setShowCategoryForm(prev => ({ ...prev, [tache.id]: true }))}>+</button>
+                                                )}
+
                                             </div>
                                         </div>
                                     </td>
