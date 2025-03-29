@@ -2,12 +2,14 @@ import React, { useContext, useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { TodoContext } from "../context/TodoContext";
 
+const allStates = ["Reussi", "En attente", "Nouveau", "En cours", "Abandonne"]; // Liste complète des états
+
 const colors = {
     "Reussi": "#28a745",     // Vert
     "En attente": "#ffc107", // Jaune
     "Nouveau": "#007bff",    // Bleu
     "En cours": "#17a2b8",   // Cyan
-    "Annulé": "#dc3545"      // Rouge
+    "Abandonne": "#dc3545"      // Rouge
 };
 
 const PieChartTaches = () => {
@@ -21,23 +23,24 @@ const PieChartTaches = () => {
             return acc;
         }, {});
 
-        return Object.entries(counts).map(([etat, count]) => ({
+        // Ajouter les états manquants avec une valeur de 0
+        return allStates.map((etat) => ({
             name: etat,
-            value: count,
-            color: colors[etat] || "#6c757d" // Gris par défaut si l'état est inconnu
+            value: counts[etat] || 0, // Valeur réelle ou 0 si absente
+            color: colors[etat] || "#6c757d" // Couleur par défaut
         }));
     }, [taches]);
 
     return (
-        <PieChart width={400} height={400}>
+        <PieChart width={300} height={400}>
             <Pie
                 data={data}
                 dataKey="value"
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={120}
-                label
+                outerRadius={30}
+
             >
                 {data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />

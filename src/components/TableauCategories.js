@@ -5,7 +5,6 @@ import '../styles/Tableau.css';
 const TableauCategories = () => {
     const { currentTodos } = useContext(TodoContext);
     const { taches, categories, relations } = currentTodos;
-
     const [expandedCategoryId, setExpandedCategoryId] = useState(null);
 
     // Memoized function to get tasks for a specific category
@@ -22,55 +21,63 @@ const TableauCategories = () => {
     return (
         <div className="table-section">
             <h2>Catégories</h2>
-            {categories.map((categorie) => (
-                <div
-                    key={categorie.id}
-                    className={`category-item ${!categorie.actif ? 'inactive' : ''}`}
-                    onClick={() => setExpandedCategoryId(
-                        expandedCategoryId === categorie.id ? null : categorie.id
-                    )}
-                >
-                    <div
-                        className="category-header"
-                        style={{
-                            backgroundColor: categorie.color,
-                            color: 'white',
-                            padding: '10px',
-                            display: 'flex',
-                            justifyContent: 'space-between'
-                        }}
-                    >
-                        <span>{categorie.title}</span>
-                        <span>{categorie.actif ? 'Actif' : 'Inactif'}</span>
-                    </div>
-
-                    {expandedCategoryId === categorie.id && (
-                        <div className="category-details">
-                            <div className="related-tasks">
-                                <h3>Tâches associées:</h3>
-                                {getTasksForCategory(categorie.id).length > 0 ? (
-                                    <ul>
-                                        {getTasksForCategory(categorie.id).map((tache) => (
-                                            <li
-                                                key={tache.id}
-                                                className={`task-item ${tache.urgent ? 'urgent' : ''} ${tache.etat === 'Reussi' ? 'done' : ''}`}
-                                            >
-                                                <div className="task-title">{tache.title}</div>
-                                                <div className="task-details">
-                                                    <span>État: {tache.etat}</span>
-                                                    <span>Échéance: {new Date(tache.date_echeance).toLocaleDateString()}</span>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <p>Aucune tâche associée</p>
-                                )}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            ))}
+            <table>
+                <thead>
+                <tr>
+                    <th>Catégorie</th>
+                    <th>Statut</th>
+                </tr>
+                </thead>
+                <tbody>
+                {categories.map((categorie) => (
+                    <React.Fragment key={categorie.id}>
+                        <tr
+                            className={`category-row ${!categorie.actif ? 'inactive' : ''}`}
+                            onClick={() => setExpandedCategoryId(
+                                expandedCategoryId === categorie.id ? null : categorie.id
+                            )}
+                        >
+                            <td style={{ color: categorie.color }}>{categorie.title}</td>
+                            <td>{categorie.actif ? 'Actif' : 'Inactif'}</td>
+                        </tr>
+                        {expandedCategoryId === categorie.id && (
+                            <tr className="category-detail-row">
+                                <td colSpan={2}>
+                                    <div className="category-details">
+                                        <h3>Tâches associées :</h3>
+                                        {getTasksForCategory(categorie.id).length > 0 ? (
+                                            <table>
+                                                <thead>
+                                                <tr>
+                                                    <th>Tâche</th>
+                                                    <th>État</th>
+                                                    <th>Échéance</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {getTasksForCategory(categorie.id).map((tache) => (
+                                                    <tr
+                                                        key={tache.id}
+                                                        className={`task-row ${tache.urgent ? 'urgent' : ''} ${tache.etat === 'Reussi' ? 'done' : ''} ${tache.urgent && tache.etat === 'Reussi' ? 'urgent done' : ''}`}
+                                                    >
+                                                        <td>{tache.title}</td>
+                                                        <td>{tache.etat}</td>
+                                                        <td>{new Date(tache.date_echeance).toLocaleDateString()}</td>
+                                                    </tr>
+                                                ))}
+                                                </tbody>
+                                            </table>
+                                        ) : (
+                                            <p>Aucune tâche associée</p>
+                                        )}
+                                    </div>
+                                </td>
+                            </tr>
+                        )}
+                    </React.Fragment>
+                ))}
+                </tbody>
+            </table>
         </div>
     );
 };

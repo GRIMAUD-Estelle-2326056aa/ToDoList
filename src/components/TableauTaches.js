@@ -241,12 +241,12 @@ const TableauTaches = () => {
                     {filteredAndSortedTasks.map((tache) => (
                         <React.Fragment key={tache.id}>
                             <tr
-                                className={`task-row ${tache.urgent ? 'urgent' : ''} ${tache.etat === 'Reussi' ? 'done' : ''}`}
+                                className={`task-row ${tache.urgent ? 'urgent' : ''} ${tache.etat === 'Reussi' ? 'done' : ''} ${tache.urgent && tache.etat === 'Reussi' ? 'urgent done' : ''}`}
                                 onClick={() => setExpandedTaskId(expandedTaskId === tache.id ? null : tache.id)}
                             >
                                 <td>{tache.title}</td>
                                 {/* <td>{tache.etat}</td> */}
-                                <td>
+                                <td className="state-select">
                                     <select
                                         value={tache.etat}
                                         onChange={(e) => handleEtatChange(tache.id, e.target.value)}
