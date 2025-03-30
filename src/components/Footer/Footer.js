@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { TodoContext } from "../context/TodoContext";
-import '../styles/Footer.css';
+import { TodoContext } from "../../context/TodoContext";
+import './Footer.css';
 
 const Footer = () => {
-    const { currentTodos, setCurrentTodos, currentView, setCurrentView } = useContext(TodoContext);
+    const { setCurrentTodos, currentView, setCurrentView } = useContext(TodoContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const isCategoryView = currentView === 'categories';
 

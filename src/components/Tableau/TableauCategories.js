@@ -1,13 +1,12 @@
 import React, { useContext, useState, useMemo } from 'react';
-import { TodoContext } from "../context/TodoContext";
-import '../styles/Tableau.css';
+import { TodoContext } from "../../context/TodoContext";
+import './Tableau.css';
 
 const TableauCategories = () => {
-    const { currentTodos } = useContext(TodoContext);
+    const { currentTodos, ETAT_TERMINE } = useContext(TodoContext);
     const { taches, categories, relations } = currentTodos;
     const [expandedCategoryId, setExpandedCategoryId] = useState(null);
 
-    // Memoized function to get tasks for a specific category
     const getTasksForCategory = useMemo(() => {
         const tachesMap = new Map(taches.map(tache => [tache.id, tache]));
         return (categoryId) => {
@@ -58,7 +57,7 @@ const TableauCategories = () => {
                                                 {getTasksForCategory(categorie.id).map((tache) => (
                                                     <tr
                                                         key={tache.id}
-                                                        className={`task-row ${tache.urgent ? 'urgent' : ''} ${tache.etat === 'Reussi' ? 'done' : ''} ${tache.urgent && tache.etat === 'Reussi' ? 'urgent done' : ''}`}
+                                                        className={`task-row ${tache.urgent ? 'urgent' : ''} ${ETAT_TERMINE.includes(tache.etat) ? 'done' : ''} ${tache.urgent && ETAT_TERMINE.includes(tache.etat) ? 'urgent done' : ''}`}
                                                     >
                                                         <td>{tache.title}</td>
                                                         <td>{tache.etat}</td>

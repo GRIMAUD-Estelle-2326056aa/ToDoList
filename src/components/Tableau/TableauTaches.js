@@ -1,10 +1,10 @@
 import React, { useContext, useState, useMemo } from 'react';
-import { TodoContext } from "../context/TodoContext";
-import '../styles/Tableau.css';
+import { TodoContext } from "../../context/TodoContext";
+import './Tableau.css';
 
 const TableauTaches = () => {
 
-    const { currentTodos, setCurrentTodos } = useContext(TodoContext);
+    const { currentTodos, setCurrentTodos, ETATS, ETAT_TERMINE } = useContext(TodoContext);
 
     const [showCategoryForm, setShowCategoryForm] = useState({});
 
@@ -111,14 +111,15 @@ const TableauTaches = () => {
 
             // Filtre fait / pas fait
             if (filters.fait !== 'Tous') {
-                const isDone = tache.etat === 'Reussi';
+                const isDone = ETAT_TERMINE.includes(tache.etat);
                 if (filters.fait === 'fait' && !isDone) return false;
                 if (filters.fait === 'pasfait' && isDone) return false;
             }
 
             return true;
         });
-    }, [sortedTasks, filters, getCategoriesForTask]);
+    }, [sortedTasks, filters, getCategoriesForTask, ETAT_TERMINE]);
+
 
     // Handler du tri
     const handleSortChange = (e) => {
@@ -176,6 +177,7 @@ const TableauTaches = () => {
 
                 {/* Sélecteurs des filtres */}
                 <div className="filter-dropdown">
+                    <label>Filtrer par :</label>
                     {renderFilterDropdown(
                         'Catégorie',
                         filters.categorie,
@@ -191,11 +193,7 @@ const TableauTaches = () => {
                         filters.etat,
                         [
                             { value: 'Tous', label: 'Tous' },
-                            { value: 'Nouveau', label: 'Nouveau' },
-                            { value: 'En cours', label: 'En cours' },
-                            { value: 'Reussi', label: 'Reussi' },
-                            { value: 'En attente', label: 'En attente' },
-                            { value: 'Abandonne', label: 'Abandonne' }
+                            ...Object.values(ETATS).map(etat => ({ value: etat, label: etat }))
                         ],
                         (e) => setFilters(prev => ({ ...prev, etat: e.target.value }))
                     )}
@@ -241,7 +239,7 @@ const TableauTaches = () => {
                     {filteredAndSortedTasks.map((tache) => (
                         <React.Fragment key={tache.id}>
                             <tr
-                                className={`task-row ${tache.urgent ? 'urgent' : ''} ${tache.etat === 'Reussi' ? 'done' : ''} ${tache.urgent && tache.etat === 'Reussi' ? 'urgent done' : ''}`}
+                                className={`task-row ${tache.urgent ? 'urgent' : ''} ${ETAT_TERMINE.includes(tache.etat) ? 'done' : ''}`}
                                 onClick={() => setExpandedTaskId(expandedTaskId === tache.id ? null : tache.id)}
                             >
                                 <td>{tache.title}</td>
@@ -251,11 +249,9 @@ const TableauTaches = () => {
                                         value={tache.etat}
                                         onChange={(e) => handleEtatChange(tache.id, e.target.value)}
                                     >
-                                        <option value="Nouveau">Nouveau</option>
-                                        <option value="En cours">En cours</option>
-                                        <option value="Reussi">Reussi</option>
-                                        <option value="En attente">En attente</option>
-                                        <option value="Abandonne">Abandonne</option>
+                                        {Object.values(ETATS).map(etat => (
+                                            <option key={etat} value={etat}>{etat}</option>
+                                        ))}
                                     </select>
                                 </td>
                                 <td>{new Date(tache.date_echeance).toLocaleDateString()}</td>
